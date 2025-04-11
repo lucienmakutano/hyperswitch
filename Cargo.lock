@@ -3931,6 +3931,7 @@ dependencies = [
  "async-trait",
  "bytes 1.10.1",
  "common_enums",
+ "common_types",
  "common_utils",
  "dyn-clone",
  "error-stack",

@@ -1,5 +1,6 @@
-use common_types::primitive_wrappers::{
-    ExtendedAuthorizationAppliedBool, RequestExtendedAuthorizationBool,
+use common_types::{
+    consts::{NO_ERROR_CODE, NO_ERROR_MESSAGE},
+    primitive_wrappers::{ExtendedAuthorizationAppliedBool, RequestExtendedAuthorizationBool},
 };
 use common_utils::{
     id_type, pii,
@@ -2809,8 +2810,11 @@ impl From<PaymentAttemptUpdate> for PaymentAttemptUpdateInternal {
                 Self {
                     connector: connector.map(Some),
                     status: Some(status),
-                    error_message,
-                    error_code,
+                    error_message: error_message.map(|optional_message| {
+                        optional_message.filter(|msg| msg != NO_ERROR_MESSAGE)
+                    }),
+                    error_code: error_code
+                        .map(|optional_code| optional_code.filter(|code| code != NO_ERROR_CODE)),
                     modified_at: common_utils::date_time::now(),
                     error_reason,
                     amount_capturable,
@@ -3476,9 +3480,11 @@ impl From<PaymentAttemptUpdate> for PaymentAttemptUpdateInternal {
                         .unwrap_or((None, None));
                 Self {
                     status,
-                    error_code: error_code.map(Some),
+                    error_code: error_code.filter(|code| code != NO_ERROR_CODE).map(Some),
                     modified_at: common_utils::date_time::now(),
-                    error_message: error_message.map(Some),
+                    error_message: error_message
+                        .filter(|msg| msg != NO_ERROR_MESSAGE)
+                        .map(Some),
                     error_reason: error_reason.map(Some),
                     updated_by,
                     unified_code: unified_code.map(Some),

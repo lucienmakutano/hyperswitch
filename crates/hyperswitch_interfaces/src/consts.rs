@@ -1,10 +1,6 @@
 //! connector integration related const declarations
 
-/// No error message string const
-pub const NO_ERROR_MESSAGE: &str = "No error message";
-
-/// No error code string const
-pub const NO_ERROR_CODE: &str = "No error code";
+pub use common_types::consts::{NO_ERROR_CODE, NO_ERROR_MESSAGE};
 
 /// Accepted format for request
 pub const ACCEPT_HEADER: &str = "text/html,application/json";
